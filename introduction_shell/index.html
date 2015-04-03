@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>shell文本处理 - 杨超 </title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>shell 文本处理</h1>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+					<p align="right">
+						<small>Created by 杨超</small>
+					</p>
+				</section>
+
+                <section id="Shell">
+                    <h2>Shell?</h2>
+                    <p align="left" class="fragment roll-in">shell 简而言之，linux交互式的命令行解释器; 也泛指所有可在shell下运行的命令集合</p>
+                    <p align="left" class="fragment roll-in">目前unix/linux 默认使用bash 主要有3种:Bash/csh/ksh</p>
+                    <p align="left" class="fragment roll-in">
+                        <img width="800" height="300" src="主流的sh.png" alt="主流的sh">
+                    </p>
+
+                    <p align="left" class="fragment roll-in">说明：基本的I/O pipe 不再赘述 之前义哲的分享: http://wiki.sankuai.com/display/DEV/20140717-Basic+commands%2C+tools+sharing+101</p>
+				</section>
+
+                 <section id="shell原则or艺术">
+					<h2>优雅源自简单 </h2>
+					<h2>elegance cloaked in simplicity</h2>
+                    <p align="left" class="fragment roll-in"> 1 专一: 一次只做一件事</p>
+                    <p align="left" class="fragment roll-in"> 2 处理文本 而不是 二进制内容 </p>
+                    <p align="left" class="fragment roll-in"> 3 合理使用正则 </p>
+                    <p align="left" class="fragment roll-in"> 4 三思而后行 可能可以用现有工具解决 </p>
+				</section>
+
+                <section id="正则">
+					<h2>Regular Expression</h2>
+                    <p align="left" class="fragment roll-in"> 正则: Regular Expression 主要分为两种:BRE/ERE 基本正则/扩展正则</p>
+                    <p align="left" class="fragment roll-in"> 正则的语法比较巧妙，而且BRE/ERE的区别也很"微妙", 建议选择一种喜欢的熟悉，否则容易迷惑 个人偏爱BRE，因为更简单</p>
+                    <p align="left" class="fragment roll-in"> 个人偏爱BRE(Basic Regular Expressions)，因为更简单 </p>
+				</section>
+
+				<section id="BRE">
+					<h2>基础而强大的BRE</h2>
+                    <p align="left" class="fragment roll-in">
+                        简单BRE语法规则，不限于此，但这些足够你解决日常80%的问题
+                        <img width="800" height="600" src="BRE-简单语法规则.png" alt="BRE-简单语法规则">
+                    </p>
+				</section>
+
+				<section id="BRE">
+					<h2>BRE 匹配示例</h2>
+                    <p align="left" class="fragment roll-in">
+                        <img width="800" height="300" src="BRE-简答示例.png" alt="BRE-简答示例">
+                    </p>
+				</section>
+
+				<section id="sed">
+					<h2>行处理工具: sed</h2>
+                    <p align="left" class="fragment roll-in"> 非常善于处理整行的数据, 花30分钟左右就可掌握基本语法 </p>
+                    <p align="left" class="fragment roll-in"> 常用形式: sed [-n/-i] -e '[action]/[pattern]/[...]/[padding]' file </p>
+                    <p align="left" class="fragment roll-in"> 实例，批量替换 rc-www仓库中 所有php脚本中的一个字符串(OffsetModel)</p>
+				</section>
+
+				<section id="awk">
+					<h2>列处理工具: awk</h2>
+                    <p align="left" class="fragment roll-in"> 非常善于处理列的数据，非常强大，经常结合sed/shell使用 </p>
+                    <p align="left" class="fragment roll-in"> awk 的语法跟c非常相似 awk '{action}' file </p>
+                    <p align="left" class="fragment roll-in"> 常用形式: awk '{print $0,$1-9,${11}} END{print NR}' file </p>
+                    <p align="left" class="fragment roll-in"> demo1: 计算某个字符串出现的次数</p>
+                    <p align="left" class="fragment roll-in"> demo2: 统计top10的命令</p>
+                    <p align="left" class="fragment roll-in"> history | awk '{count[$2]++} END{for(a in count){printf("%s %d\n",a,count[a]);}}' | sort -nrk 2 | head </p>
+				</section>
+
+				<section id="推而广之">
+					<h2>What's more?</h2>
+                    <p align="left" class="fragment roll-in"> shell中的命令数以万计，而且自己也可以根据工作需要定制自己的常用命令，所以很多东西都可以组合起来使用;比如vi </p>
+                    <p align="left" class="fragment roll-in"> 演示一下vi中正则匹配替换 </p>
+				</section>
+
+				<section id="一些shell命令附录">
+                    <p align="left" class="fragment roll-in">
+                        <img width="800" height="100" src="1.png" alt="一些shell命令附录">
+                    </p>
+                    <p align="left" class="fragment roll-in">
+                        <img width="800" height="500" src="2.png" alt="一些shell命令附录">
+                        <img width="800" height="200" src="3.png" alt="一些shell命令附录">
+                    </p>
+				</section>
+				<section id="个人心得">
+					<h2>个人的一点心得</h2>
+                    <p align="left" class="fragment roll-in">本身shell并不复杂，但是东西很多容易忘记，多练多想，需要耐心和毅力，天长日久自能融会贯通</p>
+                    <p align="left" class="fragment roll-in">
+                        推荐书籍:Shell脚本学习指南
+                        <img width="800" height="500" src="shell-book.png" alt="shell-book">
+                    </p>
+				</section>
+
+				<section id="THE END">
+					<h1>Question?</h1>
+					<h3>谢谢大家</h3>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
